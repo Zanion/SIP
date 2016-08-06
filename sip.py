@@ -25,42 +25,54 @@ from ReverseProxied import ReverseProxied
 
 def timing_loop():
     """ ***** Main timing algorithm. Runs in a separate thread.***** """
-    try:
-        print _('Starting timing loop') + '\n'
-    except Exception:
-        pass
+    print "Main timing loop\n"
     last_min = 0
     while True:  # infinite loop
+        # time = GetCurrentTime()
         gv.nowt = time.localtime()   # Current time as time struct.  Updated once per second.
+        # now = GetCurrentTimeAsTimeStamp()
         gv.now = timegm(gv.nowt)   # Current time as timestamp based on local time from the Pi. Updated once per second.
+        # if Controller.enabled and not Controller.manual_mode and (not Controller.busy or not Controller.sequential):
         if gv.sd['en'] and not gv.sd['mm'] and (not gv.sd['bsy'] or not gv.sd['seq']):
+            # if Controller.OneMinuteElapsed()
             if gv.now / 60 != last_min:  # only check programs once a minute
                 last_min = gv.now / 60
+                # ????
                 extra_adjustment = plugin_adjustment()
+                # Controller.UpdateProgram() { for program in Controller.Program }
                 for i, p in enumerate(gv.pd):  # get both index and prog item
                     # check if program time matches current time, is active, and has a duration
+                    # program.Update() { if program.Triggered and program.Active and program.Duration? }
                     if prog_match(p) and p[0] and p[6]:
                         # check each station for boards listed in program up to number of boards in Options
+                        # for board in Controller.boards
                         for b in range(len(p[7:7 + gv.sd['nbrd']])):
+                            # Controller.UpdateStations() { for station in Controller.Stations }
                             for s in range(8):
                                 sid = b * 8 + s  # station index
+                                # if station.IsMaster
                                 if sid + 1 == gv.sd['mas']:
                                     continue  # skip if this is master station
+                                # if station.IsOn
                                 if gv.srvals[sid]:  # skip if currently on
                                     continue
-
-            				# station duration condionally scaled by "water level"
+                                # station.UpdateDuration()
+                                # station duration condionally scaled by "water level"
                                 if gv.sd['iw'][b] & 1 << s:
                                     duration_adj = 1.0
-                                    duration = p[6] 
+                                    duration = p[6]
                                 else:
                                     duration_adj = gv.sd['wl'] / 100 * extra_adjustment
                                     duration = p[6] * duration_adj
                                     duration = int(round(duration)) # convert to int
+                                # station.UpdateProgram()
                                 if p[7 + b] & 1 << s:  # if this station is scheduled in this program
                                     if gv.sd['seq']:  # sequential mode
+                                        # !!! Shared Logic with nested if statement !!!
+                                        # Run Schedule Updates
                                         gv.rs[sid][2] = duration
                                         gv.rs[sid][3] = i + 1  # store program number for scheduling
+                                        # Program Schedule UI Updates
                                         gv.ps[sid][0] = i + 1  # store program number for display
                                         gv.ps[sid][1] = duration
                                     else:  # concurrent mode
@@ -68,8 +80,10 @@ def timing_loop():
                                         if duration < gv.rs[sid][2]:
                                             continue
                                         else:
-                                            gv.rs[sid][2] = duration
+                                            # Run Schedule Updates
+                                            gv.rs[sid][2] = duration # update RunSchedule Duration
                                             gv.rs[sid][3] = i + 1  # store program number
+                                            # Program Schedule UI Updates
                                             gv.ps[sid][0] = i + 1  # store program number for display
                                             gv.ps[sid][1] = duration
                         schedule_stations(p[7:7 + gv.sd['nbrd']])  # turns on gv.sd['bsy']
@@ -224,11 +238,11 @@ if __name__ == '__main__':
         gv.plugin_menu.pop(gv.plugin_menu.index(['Manage Plugins', '/plugins']))
     except Exception:
         pass
-    
+
     thread.start_new_thread(timing_loop, ())
 
     if gv.use_gpio_pins:
-        set_output()    
+        set_output()
 
 
     app.notfound = lambda: web.seeother('/')
