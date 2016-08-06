@@ -88,17 +88,22 @@ def timing_loop():
                                             gv.ps[sid][1] = duration
                         schedule_stations(p[7:7 + gv.sd['nbrd']])  # turns on gv.sd['bsy']
 
+        # if Controller.Busy
         if gv.sd['bsy']:
+            # for board in Controller.Boards (Are these actually what I'm referring to as controllers?)
             for b in range(gv.sd['nbrd']):  # Check each station once a second
+                # for station in Controller.Station
                 for s in range(8):
                     sid = b * 8 + s  # station index
                     if gv.srvals[sid]:  # if this station is on
                         if gv.now >= gv.rs[sid][1]:  # check if time is up
                             gv.srvals[sid] = 0
                             set_output()
+                            # Gonna have to tread carefully when un-fucking all this bit shifting shit
                             gv.sbits[b] &= ~(1 << s)
                             if gv.sd['mas'] - 1 != sid:  # if not master, fill out log
-                                gv.ps[sid] = [0, 0]
+                                gv.ps[sid] = [0, 0]     # Clear UI program schedule station.ClearUIProgramSchedule()
+                                # Update last run data
                                 gv.lrun[0] = sid
                                 gv.lrun[1] = gv.rs[sid][3]
                                 gv.lrun[2] = int(gv.now - gv.rs[sid][0])
@@ -128,7 +133,7 @@ def timing_loop():
                 if gv.rs[s][1]:  # if any station is scheduled
                     program_running = True
                     gv.pon = gv.rs[s][3]  # Store number of running program
-                    break
+                    break   # ? What a strange way to write this logic
                 program_running = False
                 gv.pon = None
 
@@ -153,7 +158,8 @@ def timing_loop():
                     gv.rs.append([0, 0, 0, 0])
                 gv.sd['bsy'] = 0
 
-            if gv.sd['mas'] and (gv.sd['mm'] or not gv.sd['seq']):  # handle master for maual or concurrent mode.
+            # Handle work for master node
+            if gv.sd['mas'] and (gv.sd['mm'] or not gv.sd['seq']):  # handle master for manual or concurrent mode.
                 mval = 0
                 for sid in range(gv.sd['nst']):
                     bid = sid / 8
