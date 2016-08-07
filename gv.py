@@ -152,3 +152,11 @@ options = [
     [_("Enable logging"), "boolean", "lg", _("Log all events - note that repetitive writing to an SD card can shorten its lifespan."), _("Logging")],
     [_("Max log entries"), "int", "lr", _("Length of log to keep, 0=no limits."), _("Logging")]
 ]
+
+#
+#   Global module helpers
+#
+
+# some handy constants
+NORMALLY_OPEN = 1
+NORMALLY_CLOSED = 0

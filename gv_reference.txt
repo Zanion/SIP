@@ -64,3 +64,9 @@ gv.scount	station count, used in set station to track on stations with master as
 gv.plugin_menu list to hold a 2 element list for each plugin to be added to menu on home page (['menu text', 'url'])
 gv.plugin_data dictionary (index by plugin root web prefix) to hold plugin data.
 gv.use_pigpio  set if pigpio libary is installed.
+
+Helpers:
+
+Constants:
+NORMALLY_OPEN = 1 used to indicate that the rain sensor type is normally open
+NORMALLY_CLOSED = 0 used to indicate that the rain sensor type is normally closed

@@ -202,7 +202,7 @@ def check_rain():
 
     global pi
     try:
-        if gv.sd['rst'] == 1:  # Rain sensor type normally open (default)
+        if gv.sd['rst'] == gv.NORMALLY_OPEN:  # Rain sensor type normally open (default)
             if gv.use_pigpio:
                 if not pi.read(pin_rain_sense):  # Rain detected
                     gv.sd['rs'] = 1
@@ -213,7 +213,7 @@ def check_rain():
                     gv.sd['rs'] = 1
                 else:
                     gv.sd['rs'] = 0
-        elif gv.sd['rst'] == 0:  # Rain sensor type normally closed
+        elif gv.sd['rst'] == gv.NORMALLY_CLOSED:  # Rain sensor type normally closed
             if gv.use_pigpio:
                 if pi.read(pin_rain_sense):  # Rain detected
                     gv.sd['rs'] = 1
