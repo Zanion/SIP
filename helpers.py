@@ -379,7 +379,7 @@ def schedule_stations(stations):
     else:
         rain = False
     accumulate_time = gv.now
-    if gv.sd['seq']:  # sequential mode, stations run one after another
+    if gv.IsSequential():  # sequential mode, stations run one after another
         for b in range(len(stations)):
             for s in range(8):
                 sid = b * 8 + s  # station index
