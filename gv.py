@@ -154,9 +154,18 @@ options = [
 ]
 
 #
-#   Global module helpers
+#   Global module helpers for readability and ease of use without breaking plugins
 #
 
 # some handy constants
 NORMALLY_OPEN = 1
 NORMALLY_CLOSED = 0
+
+
+def StationPassedScheduledStopTime(station_id):
+    """
+    Return if the current time is after the scheduled stop time of a given station
+    """
+    return now >= rs[station_id][1]
+
+

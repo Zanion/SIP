@@ -72,7 +72,7 @@ def timing_loop():
                 for s in range(8):
                     sid = b * 8 + s  # station index
                     if gv.srvals[sid]:  # if this station is on
-                        if gv.now >= gv.rs[sid][1]:  # check if time is up
+                        if gv.StationPassedScheduledStopTime(sid):  # check if time is up
                             gv.srvals[sid] = 0
                             set_output()
                             gv.sbits[b] &= ~(1 << s)

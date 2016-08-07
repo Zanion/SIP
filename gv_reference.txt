@@ -65,8 +65,19 @@ gv.plugin_menu list to hold a 2 element list for each plugin to be added to menu
 gv.plugin_data dictionary (index by plugin root web prefix) to hold plugin data.
 gv.use_pigpio  set if pigpio libary is installed.
 
-Helpers:
+
+##########################################################
+#   Global Variable Module Helpers
+##########################################################
 
 Constants:
-NORMALLY_OPEN = 1 used to indicate that the rain sensor type is normally open
-NORMALLY_CLOSED = 0 used to indicate that the rain sensor type is normally closed
+----
+
+NORMALLY_OPEN = 1       used to indicate that the rain sensor type is normally open
+NORMALLY_CLOSED = 0     used to indicate that the rain sensor type is normally closed
+
+Functions:
+----
+
+# Return if the current time is after the scheduled stop time of a given station
+StationPassedScheduledStopTime(station_id) : bool
