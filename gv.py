@@ -169,3 +169,24 @@ def StationPassedScheduledStopTime(station_id):
     return now >= rs[station_id][1]
 
 
+def StationIsScheduled(station_id):
+    """
+    Return if the provided station is currently scheduled
+    """
+    return gv.rs[station_id][1] > 0
+
+
+def IsProgramRunning():
+    """
+    Determine if any station is currently scheduled to run a program. If a program is
+    running then store the number of the running program. If no program is running then
+    clear the program on counter.
+    """
+    global pon
+    for station in range(sd['nst']):
+        if StationIsScheduled(station):  # if any station is scheduled
+            pon = rs[station][3]  # Store number of running program
+            return True
+        pon = None
+    return False
+

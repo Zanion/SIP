@@ -103,13 +103,7 @@ def timing_loop():
                                 gv.srvals[masid] = 1
                                 set_output()
 
-            for s in range(gv.sd['nst']):
-                if gv.rs[s][1]:  # if any station is scheduled
-                    program_running = True
-                    gv.pon = gv.rs[s][3]  # Store number of running program
-                    break
-                program_running = False
-                gv.pon = None
+            program_running = gv.IsProgramRunning()
 
             if program_running:
                 if gv.sd['urs'] and gv.sd['rs']:  # Stop stations if use rain sensor and rain detected.

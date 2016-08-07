@@ -81,3 +81,11 @@ Functions:
 
 # Return if the current time is after the scheduled stop time of a given station
 StationPassedScheduledStopTime(station_id) : bool
+
+# Return if the provided station is currently scheduled
+StationIsScheduled(station_id) : bool
+
+# Determine if any station is currently scheduled to run a program. If a program is
+# running then store the number of the running program. If no program is running then
+# clear the "program on" counter.
+IsProgramRunning() : bool
