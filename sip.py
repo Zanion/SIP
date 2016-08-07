@@ -52,7 +52,7 @@ def timing_loop():
             				# station duration condionally scaled by "water level"
                                 if gv.sd['iw'][b] & 1 << s:
                                     duration_adj = 1.0
-                                    duration = p[6] 
+                                    duration = p[6]
                                 else:
                                     duration_adj = gv.sd['wl'] / 100 * extra_adjustment
                                     duration = p[6] * duration_adj
@@ -139,7 +139,7 @@ def timing_loop():
                     gv.rs.append([0, 0, 0, 0])
                 gv.sd['bsy'] = 0
 
-            if gv.sd['mas'] and (gv.sd['mm'] or not gv.sd['seq']):  # handle master for maual or concurrent mode.
+            if gv.sd['mas'] and (gv.sd['mm'] or not gv.sd['seq']):  # handle master for manual or concurrent mode.
                 mval = 0
                 for sid in range(gv.sd['nst']):
                     bid = sid / 8
@@ -224,11 +224,11 @@ if __name__ == '__main__':
         gv.plugin_menu.pop(gv.plugin_menu.index(['Manage Plugins', '/plugins']))
     except Exception:
         pass
-    
+
     thread.start_new_thread(timing_loop, ())
 
     if gv.use_gpio_pins:
-        set_output()    
+        set_output()
 
 
     app.notfound = lambda: web.seeother('/')
