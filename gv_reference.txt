@@ -108,3 +108,9 @@ IsIdle() : bool
 # Set the current state to not busy
 SetIdle() : bool
 
+# Determine if controller is enabled
+IsEnabled() : bool
+
+# Determine if controller is disabled
+IsDisabled() : bool
+

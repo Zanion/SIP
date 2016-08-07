@@ -233,3 +233,17 @@ def SetIdle():
     """
     global sd
     sd['bsy'] = 0
+
+
+def IsEnabled():
+    """
+    Determine if controller is enabled
+    """
+    return sd['en']
+
+
+def IsDisabled():
+    """
+    Determine if controller is disabled
+    """
+    return not sd['en']

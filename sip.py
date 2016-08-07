@@ -33,7 +33,7 @@ def timing_loop():
     while True:  # infinite loop
         gv.nowt = time.localtime()   # Current time as time struct.  Updated once per second.
         gv.now = timegm(gv.nowt)   # Current time as timestamp based on local time from the Pi. Updated once per second.
-        if gv.sd['en'] and not gv.sd['mm'] and (gv.IsIdle() or gv.IsConcurrent()):
+        if gv.IsEnabled() and not gv.sd['mm'] and (gv.IsIdle() or gv.IsConcurrent()):
             if gv.now / 60 != last_min:  # only check programs once a minute
                 last_min = gv.now / 60
                 extra_adjustment = plugin_adjustment()
