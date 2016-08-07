@@ -190,3 +190,16 @@ def IsProgramRunning():
         pon = None
     return False
 
+
+def IsConcurrent():
+    """
+    Indicate if the current configuration is Concurrent
+    """
+    return not sd['seq']
+
+
+def IsSequential():
+    """
+    Indicate if the current configuration is Sequential
+    """
+    return sd['seq']

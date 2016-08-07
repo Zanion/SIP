@@ -89,3 +89,9 @@ StationIsScheduled(station_id) : bool
 # running then store the number of the running program. If no program is running then
 # clear the "program on" counter.
 IsProgramRunning() : bool
+
+# Indicate if the current configuration is Concurrent
+IsConcurrent() : bool
+
+# Indicate if the current configuration is Sequential
+IsSequential() : bool
