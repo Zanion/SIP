@@ -276,3 +276,17 @@ def IsAutoMode():
     Determine if manual mode is disabled
     """
     return not sd['mm']
+
+
+def ProgramData():
+    """
+    Return the program data settings list
+    """
+    return pd
+
+
+def NumberOfBoards():
+    """
+    Return the number of boards
+    """
+    return sd['nbrd']

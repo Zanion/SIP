@@ -46,38 +46,38 @@ def timing_loop():
             if OneMinuteHasElapsed(last_min):  # only check programs once a minute
                 last_min = gv.now / 60
                 extra_adjustment = plugin_adjustment()
-                for i, p in enumerate(gv.pd):  # get both index and prog item
+                for index, program in enumerate(gv.ProgramData()):  # get both index and prog item
                     # check if program time matches current time, is active, and has a duration
-                    if prog_match(p) and p[0] and p[6]:
+                    if prog_match(program) and program[0] and program[6]:
                         # check each station for boards listed in program up to number of boards in Options
-                        for b in range(len(p[7:7 + gv.sd['nbrd']])):
-                            for s in range(8):
-                                sid = b * 8 + s  # station index
+                        for board in range(len(program[7:7 + gv.NumberOfBoards()])):
+                            for station in range(8):
+                                sid = board * 8 + station  # station index
                                 if sid + 1 == gv.sd['mas']:
                                     continue  # skip if this is master station
                                 if gv.srvals[sid]:  # skip if currently on
                                     continue
 
                                 # station duration conditionally scaled by "water level"
-                                if gv.sd['iw'][b] & 1 << s:
+                                if gv.sd['iw'][board] & 1 << station:
                                     duration_adj = 1.0
-                                    duration = p[6]
+                                    duration = program[6]
                                 else:
                                     duration_adj = gv.sd['wl'] / 100 * extra_adjustment
-                                    duration = p[6] * duration_adj
+                                    duration = program[6] * duration_adj
                                     duration = int(round(duration)) # convert to int
-                                if p[7 + b] & 1 << s:  # if this station is scheduled in this program
+                                if program[7 + board] & 1 << station:  # if this station is scheduled in this program
                                     # Skip if concurrent and duration is shorter than existing station duration
                                     if gv.IsConcurrent() and duration < gv.rs[sid][2]:
                                         continue
                                     gv.rs[sid][2] = duration
-                                    gv.rs[sid][3] = i + 1  # store program number for scheduling
-                                    gv.ps[sid][0] = i + 1  # store program number for display
+                                    gv.rs[sid][3] = index + 1  # store program number for scheduling
+                                    gv.ps[sid][0] = index + 1  # store program number for display
                                     gv.ps[sid][1] = duration
-                        schedule_stations(p[7:7 + gv.sd['nbrd']])  # turns on gv.sd['bsy']
+                        schedule_stations(program[7:7 + gv.NumberOfBoards()])  # turns on gv.sd['bsy']
 
         if gv.IsBusy():
-            for b in range(gv.sd['nbrd']):  # Check each station once a second
+            for b in range(gv.NumberOfBoards()):  # Check each station once a second
                 for s in range(8):
                     sid = b * 8 + s  # station index
                     if gv.srvals[sid]:  # if this station is on
@@ -126,7 +126,7 @@ def timing_loop():
             if not program_running:
                 gv.srvals = [0] * (gv.sd['nst'])
                 set_output()
-                gv.sbits = [0] * (gv.sd['nbrd'] + 1)
+                gv.sbits = [0] * (gv.NumberOfBoards() + 1)
                 gv.ps = []
                 for i in range(gv.sd['nst']):
                     gv.ps.append([0, 0])

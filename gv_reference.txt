@@ -123,5 +123,12 @@ Disable()
 # Determine if current configuration is in manual mode
 IsManualMode() : bool
 
-# Determin if manual mode is disabled
+# Determine if manual mode is disabled
 IsAutoMode() : bool
+
+# Return the program data settings list
+ProgramData() : List[List[]]
+
+# Return the number of boards
+NumberOfBoards() : int
+

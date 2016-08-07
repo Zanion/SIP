@@ -235,7 +235,7 @@ def clear_mm():
     """
     from gpio_pins import set_output
     if gv.IsManualMode():
-        gv.sbits = [0] * (gv.sd['nbrd'] + 1)
+        gv.sbits = [0] * (gv.NumberOfBoards() + 1)
         gv.ps = []
         for i in range(gv.sd['nst']):
             gv.ps.append([0, 0])
@@ -416,7 +416,7 @@ def stop_onrain():
 
     from gpio_pins import set_output
     do_set_output = False
-    for b in range(gv.sd['nbrd']):
+    for b in range(gv.NumberOfBoards()):
         for s in range(8):
             sid = b * 8 + s  # station index
             if gv.sd['ir'][b] & 1 << s:  # if station ignores rain...
@@ -443,7 +443,7 @@ def stop_stations():
     gv.ps = []
     for i in range(gv.sd['nst']):
         gv.ps.append([0, 0])
-    gv.sbits = [0] * (gv.sd['nbrd'] + 1)
+    gv.sbits = [0] * (gv.NumberOfBoards() + 1)
     gv.rs = []
     for i in range(gv.sd['nst']):
         gv.rs.append([0, 0, 0, 0])
