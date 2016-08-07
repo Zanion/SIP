@@ -23,6 +23,15 @@ from ReverseProxied import ReverseProxied
 # if gv.use_gpio_pins is False (which is set in relay board plugin.
 # set_output()
 
+
+def OneMinuteHasElapsed(last_min):
+    """
+    Return if a full minute has elapsed since the last minute
+    """
+    SECONDS_PER_MINUTE = 60
+    return gv.now / SECONDS_PER_MINUTE != last_min
+
+
 def timing_loop():
     """ ***** Main timing algorithm. Runs in a separate thread.***** """
     try:
@@ -34,7 +43,7 @@ def timing_loop():
         gv.nowt = time.localtime()   # Current time as time struct.  Updated once per second.
         gv.now = timegm(gv.nowt)   # Current time as timestamp based on local time from the Pi. Updated once per second.
         if gv.IsEnabled() and gv.IsAutoMode() and (gv.IsIdle() or gv.IsConcurrent()):
-            if gv.now / 60 != last_min:  # only check programs once a minute
+            if OneMinuteHasElapsed(last_min):  # only check programs once a minute
                 last_min = gv.now / 60
                 extra_adjustment = plugin_adjustment()
                 for i, p in enumerate(gv.pd):  # get both index and prog item
