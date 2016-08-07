@@ -120,3 +120,8 @@ IsDisabled() : bool
 # Disable the controller
 Disable()
 
+# Determine if current configuration is in manual mode
+IsManualMode() : bool
+
+# Determin if manual mode is disabled
+IsAutoMode() : bool

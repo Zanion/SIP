@@ -71,8 +71,7 @@ sd = {
     u"urs": 0,
     u"nopts": 13,
     u"pwd": u"b3BlbmRvb3I=",
-    u"password": u"",
-    u"ipas": 0,
+    u"password": u"", u"ipas": 0,
     u"rst": 1,
     u"mm": 0,
     u"mo": [0],
@@ -263,3 +262,17 @@ def Disable():
     """
     global sd
     sd['en'] = 0
+
+
+def IsManualMode():
+    """
+    Determine if current configuration is in manual mode
+    """
+    return sd['mm']
+
+
+def IsAutoMode():
+    """
+    Determine if manual mode is disabled
+    """
+    return not sd['mm']

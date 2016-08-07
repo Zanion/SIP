@@ -234,7 +234,7 @@ def clear_mm():
     Clear manual mode settings and stop any running zones.
     """
     from gpio_pins import set_output
-    if gv.sd['mm']:
+    if gv.IsManualMode():
         gv.sbits = [0] * (gv.sd['nbrd'] + 1)
         gv.ps = []
         for i in range(gv.sd['nst']):
