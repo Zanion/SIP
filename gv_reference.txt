@@ -111,6 +111,12 @@ SetIdle() : bool
 # Determine if controller is enabled
 IsEnabled() : bool
 
+# Enable the controller
+Enable()
+
 # Determine if controller is disabled
 IsDisabled() : bool
+
+# Disable the controller
+Disable()
 

@@ -242,8 +242,24 @@ def IsEnabled():
     return sd['en']
 
 
+def Enable():
+    """
+    Enable the controller
+    """
+    global sd
+    sd['en'] = 1
+
+
 def IsDisabled():
     """
     Determine if controller is disabled
     """
     return not sd['en']
+
+
+def Disable():
+    """
+    Disable the controller
+    """
+    global sd
+    sd['en'] = 0
