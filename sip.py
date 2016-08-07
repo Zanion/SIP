@@ -33,7 +33,7 @@ def timing_loop():
     while True:  # infinite loop
         gv.nowt = time.localtime()   # Current time as time struct.  Updated once per second.
         gv.now = timegm(gv.nowt)   # Current time as timestamp based on local time from the Pi. Updated once per second.
-        if gv.sd['en'] and not gv.sd['mm'] and (not gv.sd['bsy'] or gv.IsConcurrent()):
+        if gv.sd['en'] and not gv.sd['mm'] and (gv.IsIdle() or gv.IsConcurrent()):
             if gv.now / 60 != last_min:  # only check programs once a minute
                 last_min = gv.now / 60
                 extra_adjustment = plugin_adjustment()
@@ -67,7 +67,7 @@ def timing_loop():
                                     gv.ps[sid][1] = duration
                         schedule_stations(p[7:7 + gv.sd['nbrd']])  # turns on gv.sd['bsy']
 
-        if gv.sd['bsy']:
+        if gv.IsBusy():
             for b in range(gv.sd['nbrd']):  # Check each station once a second
                 for s in range(8):
                     sid = b * 8 + s  # station index
@@ -124,7 +124,7 @@ def timing_loop():
                 gv.rs = []
                 for i in range(gv.sd['nst']):
                     gv.rs.append([0, 0, 0, 0])
-                gv.sd['bsy'] = 0
+                gv.SetIdle()
 
             if gv.sd['mas'] and (gv.sd['mm'] or gv.IsConcurrent()):  # handle master for manual or concurrent mode.
                 mval = 0

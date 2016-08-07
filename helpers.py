@@ -405,7 +405,7 @@ def schedule_stations(stations):
                     else:  # if rain and station does not ignore, clear station from display
                         gv.sbits[b] &= ~1 << s
                         gv.ps[s] = [0, 0]
-    gv.sd['bsy'] = 1
+    gv.SetBusy()
     return
 
 
@@ -447,7 +447,7 @@ def stop_stations():
     gv.rs = []
     for i in range(gv.sd['nst']):
         gv.rs.append([0, 0, 0, 0])
-    gv.sd['bsy'] = 0
+    gv.SetIdle()
     return
 
 

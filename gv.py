@@ -203,3 +203,33 @@ def IsSequential():
     Indicate if the current configuration is Sequential
     """
     return sd['seq']
+
+
+def IsBusy():
+    """
+    Indicate if the current state is busy
+    """
+    return sd['bsy']
+
+
+def SetBusy():
+    """
+    Set the current state to busy
+    """
+    global sd
+    sd['bsy'] = 1
+
+
+def IsIdle():
+    """
+    Indicate if the current state is not busy
+    """
+    return not sd['bsy']
+
+
+def SetIdle():
+    """
+    Set the current state to not busy
+    """
+    global sd
+    sd['bsy'] = 0

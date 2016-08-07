@@ -95,3 +95,16 @@ IsConcurrent() : bool
 
 # Indicate if the current configuration is Sequential
 IsSequential() : bool
+
+# Indicate if the current state is busy
+IsBusy() : bool
+
+# Set the current state to busy
+SetBusy()
+
+# Indicate if the current state is not busy
+IsIdle() : bool
+
+# Set the current state to not busy
+SetIdle() : bool
+
