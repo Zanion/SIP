@@ -58,21 +58,13 @@ def timing_loop():
                                     duration = p[6] * duration_adj
                                     duration = int(round(duration)) # convert to int
                                 if p[7 + b] & 1 << s:  # if this station is scheduled in this program
-
-                                    if gv.sd['seq']:  # sequential mode
-                                        gv.rs[sid][2] = duration
-                                        gv.rs[sid][3] = i + 1  # store program number for scheduling
-                                        gv.ps[sid][0] = i + 1  # store program number for display
-                                        gv.ps[sid][1] = duration
-                                    else:  # concurrent mode
-                                        # If duration is shorter than any already set for this station
-                                        if duration < gv.rs[sid][2]:
-                                            continue
-                                        else:
-                                            gv.rs[sid][2] = duration
-                                            gv.rs[sid][3] = i + 1  # store program number
-                                            gv.ps[sid][0] = i + 1  # store program number for display
-                                            gv.ps[sid][1] = duration
+                                    # Skip if concurrent and duration is shorter than existing station duration
+                                    if not gv.sd['seq'] and duration < gv.rs[sid][2]:
+                                        continue
+                                    gv.rs[sid][2] = duration
+                                    gv.rs[sid][3] = i + 1  # store program number for scheduling
+                                    gv.ps[sid][0] = i + 1  # store program number for display
+                                    gv.ps[sid][1] = duration
                         schedule_stations(p[7:7 + gv.sd['nbrd']])  # turns on gv.sd['bsy']
 
         if gv.sd['bsy']:
