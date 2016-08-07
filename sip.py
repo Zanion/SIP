@@ -32,6 +32,15 @@ def OneMinuteHasElapsed(last_min):
     return gv.now / SECONDS_PER_MINUTE != last_min
 
 
+def GetStationIndex(board_offset, station_offset):
+    """
+    Return the index of the station provided the index of the board and the index of
+    the station on the board.
+    """
+    STATIONS_PER_BOARD = 8
+    return board_offset * STATIONS_PER_BOARD + station_offset
+
+
 def timing_loop():
     """ ***** Main timing algorithm. Runs in a separate thread.***** """
     try:
@@ -52,7 +61,7 @@ def timing_loop():
                         # check each station for boards listed in program up to number of boards in Options
                         for board in range(len(program[7:7 + gv.NumberOfBoards()])):
                             for station in range(8):
-                                sid = board * 8 + station  # station index
+                                sid = GetStationIndex(board, station)# station index
                                 if sid + 1 == gv.sd['mas']:
                                     continue  # skip if this is master station
                                 if gv.srvals[sid]:  # skip if currently on
