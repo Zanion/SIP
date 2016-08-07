@@ -49,7 +49,7 @@ def timing_loop():
                                 if gv.srvals[sid]:  # skip if currently on
                                     continue
 
-            				# station duration conditionally scaled by "water level"
+                                # station duration conditionally scaled by "water level"
                                 if gv.sd['iw'][b] & 1 << s:
                                     duration_adj = 1.0
                                     duration = p[6]
