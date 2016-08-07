@@ -49,7 +49,7 @@ def timing_loop():
                                 if gv.srvals[sid]:  # skip if currently on
                                     continue
 
-            				# station duration condionally scaled by "water level"
+            				# station duration conditionally scaled by "water level"
                                 if gv.sd['iw'][b] & 1 << s:
                                     duration_adj = 1.0
                                     duration = p[6]
@@ -58,13 +58,14 @@ def timing_loop():
                                     duration = p[6] * duration_adj
                                     duration = int(round(duration)) # convert to int
                                 if p[7 + b] & 1 << s:  # if this station is scheduled in this program
+
                                     if gv.sd['seq']:  # sequential mode
                                         gv.rs[sid][2] = duration
                                         gv.rs[sid][3] = i + 1  # store program number for scheduling
                                         gv.ps[sid][0] = i + 1  # store program number for display
                                         gv.ps[sid][1] = duration
                                     else:  # concurrent mode
-                                        # If duration is shortter than any already set for this station
+                                        # If duration is shorter than any already set for this station
                                         if duration < gv.rs[sid][2]:
                                             continue
                                         else:
