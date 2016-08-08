@@ -61,8 +61,8 @@ def timing_loop():
                         # check each station for boards listed in program up to number of boards in Options
                         for board in range(len(program[7:7 + gv.NumberOfBoards()])):
                             for station in range(8):
-                                sid = GetStationIndex(board, station)# station index
-                                if sid + 1 == gv.sd['mas']:
+                                sid = GetStationIndex(board, station)
+                                if gv.StationIsMaster(sid):
                                     continue  # skip if this is master station
                                 if gv.srvals[sid]:  # skip if currently on
                                     continue
@@ -94,7 +94,7 @@ def timing_loop():
                             gv.srvals[sid] = 0
                             set_output()
                             gv.sbits[b] &= ~(1 << s)
-                            if gv.sd['mas'] - 1 != sid:  # if not master, fill out log
+                            if not gv.StationIsMaster(sid):  # if not master, fill out log
                                 gv.ps[sid] = [0, 0]
                                 gv.lrun[0] = sid
                                 gv.lrun[1] = gv.rs[sid][3]
@@ -105,18 +105,18 @@ def timing_loop():
                             gv.rs[sid] = [0, 0, 0, 0]
                     else:  # if this station is not yet on
                         if gv.rs[sid][0] <= gv.now < gv.rs[sid][1]:
-                            if gv.sd['mas'] - 1 != sid:  # if not master
+                            if not gv.StationIsMaster(sid):
                                 gv.srvals[sid] = 1  # station is turned on
                                 set_output()
                                 gv.sbits[b] |= 1 << s  # Set display to on
                                 gv.ps[sid][0] = gv.rs[sid][3]
                                 gv.ps[sid][1] = gv.rs[sid][2]
-                                if gv.sd['mas'] and gv.sd['mo'][b] & 1 << (s - (s / 8) * 80):  # Master settings
-                                    masid = gv.sd['mas'] - 1  # master index
+                                if gv.MasterStationAssigned() and gv.sd['mo'][b] & 1 << (s - (s / 8) * 80):  # Master settings
+                                    masid = gv.IndexOfMasterStation()  # master index
                                     gv.rs[masid][0] = gv.rs[sid][0] + gv.sd['mton']
                                     gv.rs[masid][1] = gv.rs[sid][1] + gv.sd['mtoff']
                                     gv.rs[masid][3] = gv.rs[sid][3]
-                            elif gv.sd['mas'] == sid + 1:
+                            else:
                                 gv.sbits[b] |= 1 << sid  # (gv.sd['mas'] - 1)
                                 gv.srvals[masid] = 1
                                 set_output()
@@ -144,16 +144,16 @@ def timing_loop():
                     gv.rs.append([0, 0, 0, 0])
                 gv.SetIdle()
 
-            if gv.sd['mas'] and (gv.IsManualMode() or gv.IsConcurrent()):  # handle master for manual or concurrent mode.
+            if gv.MasterStationAssigned() and (gv.IsManualMode() or gv.IsConcurrent()):  # handle master for manual or concurrent mode.
                 mval = 0
                 for sid in range(gv.sd['nst']):
                     bid = sid / 8
                     s = sid - bid * 8
-                    if gv.sd['mas'] != sid + 1 and (gv.srvals[sid] and gv.sd['mo'][bid] & 1 << s):
+                    if not gv.StationIsMaster(sid) and (gv.srvals[sid] and gv.sd['mo'][bid] & 1 << s):
                         mval = 1
                         break
                 if not mval:
-                    gv.rs[gv.sd['mas'] - 1][1] = gv.now  # turn off master
+                    gv.rs[gv.IndexOfMasterStation()][1] = gv.now  # turn off master
 
         if gv.sd['urs']:
             check_rain()  # in helpers.py

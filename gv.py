@@ -290,3 +290,24 @@ def NumberOfBoards():
     Return the number of boards
     """
     return sd['nbrd']
+
+
+def IndexOfMasterStation():
+    """
+    Return the index of the master station
+    """
+    return sd['mas'] - 1
+
+
+def StationIsMaster(station_index):
+    """
+    Return if the station is master
+    """
+    return station_index == IndexOfMasterStation()
+
+
+def MasterStationAssigned():
+    """
+    Return if a station has been assigned master status
+    """
+    return True if sd['mas'] else False

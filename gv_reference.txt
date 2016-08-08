@@ -132,3 +132,11 @@ ProgramData() : List[List[]]
 # Return the number of boards
 NumberOfBoards() : int
 
+# Return the index of the master station
+IndexOfMasterStation() : int
+
+# Return if station is master station
+StationIsMaster(station_index) : bool
+
+# Return if a station has be assigned master status
+MasterStationAssigned() : bool
