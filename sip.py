@@ -95,7 +95,7 @@ def timing_loop():
                             set_output()
                             gv.sbits[b] &= ~(1 << s)
                             if not gv.StationIsMaster(sid):  # if not master, fill out log
-                                gv.ps[sid] = [0, 0]
+                                gv.ClearUIProgramScheduleForStation(sid)
                                 gv.lrun[0] = sid
                                 gv.lrun[1] = gv.rs[sid][3]
                                 gv.lrun[2] = int(gv.now - gv.rs[sid][0])
@@ -136,9 +136,7 @@ def timing_loop():
                 gv.srvals = [0] * (gv.sd['nst'])
                 set_output()
                 gv.sbits = [0] * (gv.NumberOfBoards() + 1)
-                gv.ps = []
-                for i in range(gv.sd['nst']):
-                    gv.ps.append([0, 0])
+                gv.ClearUIProgramScheduleForAllStations()
                 gv.rs = []
                 for i in range(gv.sd['nst']):
                     gv.rs.append([0, 0, 0, 0])

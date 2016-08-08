@@ -140,3 +140,9 @@ StationIsMaster(station_index) : bool
 
 # Return if a station has be assigned master status
 MasterStationAssigned() : bool
+
+# Set the program schedule for the UI fields to 0
+ClearUIProgramScheduleForStation(station_index)
+
+# Sets the program schedule for the UI fields to 0 for every station
+ClearUIProgramScheduleForAllStations()

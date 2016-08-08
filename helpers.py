@@ -236,9 +236,7 @@ def clear_mm():
     from gpio_pins import set_output
     if gv.IsManualMode():
         gv.sbits = [0] * (gv.NumberOfBoards() + 1)
-        gv.ps = []
-        for i in range(gv.sd['nst']):
-            gv.ps.append([0, 0])
+        gv.ClearUIProgramScheduleForAllStations()
         gv.rs = []
         for i in range(gv.sd['nst']):
             gv.rs.append([0, 0, 0, 0])
@@ -391,7 +389,7 @@ def schedule_stations(stations):
                         accumulate_time += gv.sd['sdt']  # add station delay
                     else:
                         gv.sbits[b] &= ~1 << s
-                        gv.ps[s] = [0, 0]
+                        gv.ClearUIProgramScheduleForStation(s)
     else:  # concurrent mode, stations allowed to run in parallel
         for b in range(len(stations)):
             for s in range(8):
@@ -404,7 +402,7 @@ def schedule_stations(stations):
                         gv.rs[sid][1] = (gv.now + gv.rs[sid][2])  # set stop time
                     else:  # if rain and station does not ignore, clear station from display
                         gv.sbits[b] &= ~1 << s
-                        gv.ps[s] = [0, 0]
+                        gv.ClearUIProgramScheduleForStation(s)
     gv.SetBusy()
     return
 
@@ -425,7 +423,7 @@ def stop_onrain():
                 gv.srvals[sid] = 0
                 do_set_output = True
                 gv.sbits[b] &= ~1 << s  # Clears stopped stations from display
-                gv.ps[sid] = [0, 0]
+                gv.ClearUIProgramScheduleForStation(sid)
                 gv.rs[sid] = [0, 0, 0, 0]
 
     if do_set_output:
@@ -440,9 +438,7 @@ def stop_stations():
     from gpio_pins import set_output
     gv.srvals = [0] * (gv.sd['nst'])
     set_output()
-    gv.ps = []
-    for i in range(gv.sd['nst']):
-        gv.ps.append([0, 0])
+    gv.ClearUIProgramScheduleForAllStations()
     gv.sbits = [0] * (gv.NumberOfBoards() + 1)
     gv.rs = []
     for i in range(gv.sd['nst']):

@@ -311,3 +311,28 @@ def MasterStationAssigned():
     Return if a station has been assigned master status
     """
     return True if sd['mas'] else False
+
+
+def ClearUIProgramScheduleForStation(station_id):
+    """
+    Sets the program schedule for the UI fields to 0
+    """
+    global ps
+    ps[station_id] = [0, 0]
+
+
+def NumberOfStations():
+    """
+    Return the number of stations configured
+    """
+    return sd['nst']
+
+
+def ClearUIProgramScheduleForAllStations():
+    """
+    Sets the program schedule for the UI fields to 0 for every station
+    """
+    global ps
+    ps = []
+    for _ in range(NumberOfStations()):
+        ps.append([0, 0])
