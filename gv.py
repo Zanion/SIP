@@ -350,3 +350,33 @@ def WaterLevelDurationAdjustment(adjustment):
     Perform water level adjustment for duration
     """
     return WaterLevelPercentage() / 100 * adjustment
+
+
+def MasterOnDelay():
+    """
+    Return Master on delay
+    """
+    return sd['mton']
+
+
+def SetMasterOnDelay(delay):
+    """
+    Set master on delay
+    """
+    global sd
+    sd['mton'] = delay
+
+
+def MasterOffDelay():
+    """
+    Return master off delay
+    """
+    return sd['mtoff']
+
+
+def SetMasterOffDelay(delay):
+    """
+    Set master off delay
+    """
+    global sd
+    sd['mtoff'] = delay

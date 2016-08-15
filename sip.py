@@ -113,8 +113,8 @@ def timing_loop():
                                 gv.ps[sid][1] = gv.rs[sid][2]
                                 if gv.MasterStationAssigned() and gv.sd['mo'][b] & 1 << (s - (s / 8) * 80):  # Master settings
                                     masid = gv.IndexOfMasterStation()  # master index
-                                    gv.rs[masid][0] = gv.rs[sid][0] + gv.sd['mton']
-                                    gv.rs[masid][1] = gv.rs[sid][1] + gv.sd['mtoff']
+                                    gv.rs[masid][0] = gv.rs[sid][0] + gv.MasterOnDelay()
+                                    gv.rs[masid][1] = gv.rs[sid][1] + gv.MasterOffDelay()
                                     gv.rs[masid][3] = gv.rs[sid][3]
                             else:
                                 gv.sbits[b] |= 1 << sid  # (gv.sd['mas'] - 1)
