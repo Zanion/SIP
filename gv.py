@@ -431,3 +431,18 @@ def IsRainSensorTypeNormallyClosed():
     Determine if rain sensor type is normally closed
     """
     return RainSensorType() == NORMALLY_CLOSED
+
+
+def RainDelayInHours():
+    """
+    Return the rain delay in hours
+    """
+    return sd['rd']
+
+
+def SetRainDelayInHours(hours):
+    """
+    Set the rain delay in hours
+    """
+    global sd
+    sd['rd'] = hours

@@ -372,7 +372,7 @@ def schedule_stations(stations):
     """
     Schedule stations/valves/zones to run.
     """
-    if gv.sd['rd'] or (gv.IsRainSensorUsed() and gv.IsRainSensed()):  # If rain delay or rain detected by sensor
+    if gv.RainDelayInHours() or (gv.IsRainSensorUsed() and gv.IsRainSensed()):  # If rain delay or rain detected by sensor
         rain = True
     else:
         rain = False
