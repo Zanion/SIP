@@ -475,3 +475,34 @@ def CurrentTime():
     Return current time
     """
     return now
+
+
+def SetCurrentTime(time):
+    """
+    Set the current time value in cache
+    """
+    global now
+    now = time
+
+
+def SetCurrentTimeStructLocalTime():
+    """
+    Set current time as time struct
+    """
+    global nowt
+    nowt = time.localtime()   # Current time as time struct.  Updated once per second.
+
+
+def CurrentTimeStruct():
+    """
+    Get current time as struct
+    """
+    return nowt
+
+
+def UpdateTime():
+    """
+    Update the current time
+    """
+    SetCurrentTimeStructLocalTime()
+    SetCurrentTime(timegm(CurrentTimeStruct()))   # Current time as timestamp based on local time from the Pi. Updated once per second.
