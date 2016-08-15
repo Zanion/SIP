@@ -201,31 +201,32 @@ def check_rain():
     """
 
     global pi
-    try:
-        if IsRainSensorTypeNormallyOpen():  # Rain sensor type normally open (default)
-            if gv.use_pigpio:
-                if not pi.read(pin_rain_sense):  # Rain detected
-                    gv.SetRainIsSensed()
+    if gv.IsRainSensorUsed():
+        try:
+            if IsRainSensorTypeNormallyOpen():  # Rain sensor type normally open (default)
+                if gv.use_pigpio:
+                    if not pi.read(pin_rain_sense):  # Rain detected
+                        gv.SetRainIsSensed()
+                    else:
+                        gv.SetRainIsNotSensed()
                 else:
-                    gv.SetRainIsNotSensed()
-            else:
-                if not GPIO.input(pin_rain_sense):  # Rain detected
-                    gv.SetRainIsSensed()
+                    if not GPIO.input(pin_rain_sense):  # Rain detected
+                        gv.SetRainIsSensed()
+                    else:
+                        gv.SetRainIsNotSensed()
+            elif gv.IsRainSensorTypeNormallyClosed():
+                if gv.use_pigpio:
+                    if pi.read(pin_rain_sense):  # Rain detected
+                        gv.SetRainIsSensed()
+                    else:
+                        gv.SetRainIsNotSensed()
                 else:
-                    gv.SetRainIsNotSensed()
-        elif gv.IsRainSensorTypeNormallyClosed():
-            if gv.use_pigpio:
-                if pi.read(pin_rain_sense):  # Rain detected
-                    gv.SetRainIsSensed()
-                else:
-                    gv.SetRainIsNotSensed()
-            else:
-                if GPIO.input(pin_rain_sense):  # Rain detected
-                    gv.SetRainIsSensed()
-                else:
-                    gv.SetRainIsNotSensed()
-    except NameError:
-        pass
+                    if GPIO.input(pin_rain_sense):  # Rain detected
+                        gv.SetRainIsSensed()
+                    else:
+                        gv.SetRainIsNotSensed()
+        except NameError:
+            pass
 
 
 

@@ -153,8 +153,7 @@ def timing_loop():
                 if not mval:
                     gv.rs[gv.IndexOfMasterStation()][1] = gv.now  # turn off master
 
-        if gv.IsRainSensorUsed():
-            check_rain()  # in helpers.py
+        check_rain()  # in helpers.py
 
         if gv.RainDelayInHours() and gv.now >= gv.sd['rdst']:  # Check of rain delay time is up
             gv.SetRainDelayInHours(0)
