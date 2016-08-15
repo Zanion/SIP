@@ -380,3 +380,54 @@ def SetMasterOffDelay(delay):
     """
     global sd
     sd['mtoff'] = delay
+
+
+def IsRainSensed():
+    """
+    Determine if rain is currently sensed
+    """
+    return sd['rs']
+
+
+def SetRainIsSensed():
+    """
+    Set that rain is currently sensed
+    """
+    global sd
+    sd['rs'] = 1
+
+
+def SetRainIsNotSensed():
+    """
+    Set that rain is not sensed
+    """
+    global sd
+    sd['rs'] = 0
+
+
+def IsRainSensorUsed():
+    """
+    Determine if rain sensor is currently used
+    """
+    return sd['urs']
+
+
+def RainSensorType():
+    """
+    Return rain sensor type
+    """
+    return sd['rst']
+
+
+def IsRainSensorTypeNormallyOpen():
+    """
+    Determine if rain sensor type is normally open
+    """
+    return RainSensorType() == NORMALLY_OPEN
+
+
+def IsRainSensorTypeNormallyClosed():
+    """
+    Determine if rain sensor type is normally closed
+    """
+    return RainSensorType() == NORMALLY_CLOSED

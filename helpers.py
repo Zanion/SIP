@@ -202,28 +202,28 @@ def check_rain():
 
     global pi
     try:
-        if gv.sd['rst'] == gv.NORMALLY_OPEN:  # Rain sensor type normally open (default)
+        if IsRainSensorTypeNormallyOpen():  # Rain sensor type normally open (default)
             if gv.use_pigpio:
                 if not pi.read(pin_rain_sense):  # Rain detected
-                    gv.sd['rs'] = 1
+                    gv.SetRainIsSensed()
                 else:
-                    gv.sd['rs'] = 0
+                    gv.SetRainIsNotSensed()
             else:
                 if not GPIO.input(pin_rain_sense):  # Rain detected
-                    gv.sd['rs'] = 1
+                    gv.SetRainIsSensed()
                 else:
-                    gv.sd['rs'] = 0
-        elif gv.sd['rst'] == gv.NORMALLY_CLOSED:  # Rain sensor type normally closed
+                    gv.SetRainIsNotSensed()
+        elif gv.IsRainSensorTypeNormallyClosed():
             if gv.use_pigpio:
                 if pi.read(pin_rain_sense):  # Rain detected
-                    gv.sd['rs'] = 1
+                    gv.SetRainIsSensed()
                 else:
-                    gv.sd['rs'] = 0
+                    gv.SetRainIsNotSensed()
             else:
                 if GPIO.input(pin_rain_sense):  # Rain detected
-                    gv.sd['rs'] = 1
+                    gv.SetRainIsSensed()
                 else:
-                    gv.sd['rs'] = 0
+                    gv.SetRainIsNotSensed()
     except NameError:
         pass
 
@@ -372,7 +372,7 @@ def schedule_stations(stations):
     """
     Schedule stations/valves/zones to run.
     """
-    if gv.sd['rd'] or (gv.sd['urs'] and gv.sd['rs']):  # If rain delay or rain detected by sensor
+    if gv.sd['rd'] or (gv.IsRainSensorUsed() and gv.IsRainSensed()):  # If rain delay or rain detected by sensor
         rain = True
     else:
         rain = False

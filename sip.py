@@ -124,7 +124,7 @@ def timing_loop():
             program_running = gv.IsProgramRunning()
 
             if program_running:
-                if gv.sd['urs'] and gv.sd['rs']:  # Stop stations if use rain sensor and rain detected.
+                if gv.IsRainSensorUsed() and gv.IsRainSensed():  # Stop stations if use rain sensor and rain detected.
                     stop_onrain()  # Clear schedule for stations that do not ignore rain.
                 for idx in range(len(gv.rs)):  # loop through program schedule (gv.ps)
                     if gv.rs[idx][2] == 0:  # skip stations with no duration
