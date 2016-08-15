@@ -72,7 +72,7 @@ def timing_loop():
                                     duration_adj = 1.0
                                     duration = program[6]
                                 else:
-                                    duration_adj = gv.sd['wl'] / 100 * extra_adjustment
+                                    duration_adj = gv.WaterLevelDurationAdjustment(extra_adjustment)
                                     duration = program[6] * duration_adj
                                     duration = int(round(duration)) # convert to int
                                 if program[7 + board] & 1 << station:  # if this station is scheduled in this program

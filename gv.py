@@ -336,3 +336,17 @@ def ClearUIProgramScheduleForAllStations():
     ps = []
     for _ in range(NumberOfStations()):
         ps.append([0, 0])
+
+
+def WaterLevelPercentage():
+    """
+    Return the water level
+    """
+    return sd['wl']
+
+
+def WaterLevelDurationAdjustment(adjustment):
+    """
+    Perform water level adjustment for duration
+    """
+    return WaterLevelPercentage() / 100 * adjustment

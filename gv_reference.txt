@@ -146,3 +146,9 @@ ClearUIProgramScheduleForStation(station_index)
 
 # Sets the program schedule for the UI fields to 0 for every station
 ClearUIProgramScheduleForAllStations()
+
+# Return the water level
+WaterLevelPercentage()
+
+# Perform water level adjustment for duration
+WaterLevelDurationAdjustment(adjustment)
