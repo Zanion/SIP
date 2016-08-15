@@ -63,7 +63,7 @@ def reboot(wait=1, block=False):
     """
     if block:
         from gpio_pins import set_output
-        gv.srvals = [0] * (gv.sd['nst'])
+        gv.srvals = [0] * (gv.NumberOfStations())
         set_output()
         if gv.use_pigpio:
             pass
@@ -92,7 +92,7 @@ def poweroff(wait=1, block=False):
     """
     if block:
         from gpio_pins import set_output
-        gv.srvals = [0] * (gv.sd['nst'])
+        gv.srvals = [0] * (gv.NumberOfStations())
         set_output()
         if gv.use_pigpio:
             pass
@@ -122,7 +122,7 @@ def restart(wait=1, block=False):
     if block:
         report_restart()
         from gpio_pins import set_output
-        gv.srvals = [0] * (gv.sd['nst'])
+        gv.srvals = [0] * (gv.NumberOfStations())
         set_output()
         if gv.use_pigpio:
             pass
@@ -238,9 +238,9 @@ def clear_mm():
         gv.sbits = [0] * (gv.NumberOfBoards() + 1)
         gv.ClearUIProgramScheduleForAllStations()
         gv.rs = []
-        for i in range(gv.sd['nst']):
+        for i in range(gv.NumberOfStations()):
             gv.rs.append([0, 0, 0, 0])
-        gv.srvals = [0] * (gv.sd['nst'])
+        gv.srvals = [0] * (gv.NumberOfStations())
         set_output()
     return
 
@@ -436,12 +436,12 @@ def stop_stations():
     Stop all running stations, clear schedules.
     """
     from gpio_pins import set_output
-    gv.srvals = [0] * (gv.sd['nst'])
+    gv.srvals = [0] * (gv.NumberOfStations())
     set_output()
     gv.ClearUIProgramScheduleForAllStations()
     gv.sbits = [0] * (gv.NumberOfBoards() + 1)
     gv.rs = []
-    for i in range(gv.sd['nst']):
+    for i in range(gv.NumberOfStations()):
         gv.rs.append([0, 0, 0, 0])
     gv.SetIdle()
     return

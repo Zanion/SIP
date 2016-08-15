@@ -133,18 +133,18 @@ def timing_loop():
                         gv.ps[idx][1] -= 1
 
             if not program_running:
-                gv.srvals = [0] * (gv.sd['nst'])
+                gv.srvals = [0] * (gv.NumberOfStations())
                 set_output()
                 gv.sbits = [0] * (gv.NumberOfBoards() + 1)
                 gv.ClearUIProgramScheduleForAllStations()
                 gv.rs = []
-                for i in range(gv.sd['nst']):
+                for i in range(gv.NumberOfStations()):
                     gv.rs.append([0, 0, 0, 0])
                 gv.SetIdle()
 
             if gv.MasterStationAssigned() and (gv.IsManualMode() or gv.IsConcurrent()):  # handle master for manual or concurrent mode.
                 mval = 0
-                for sid in range(gv.sd['nst']):
+                for sid in range(gv.NumberOfStations()):
                     bid = sid / 8
                     s = sid - bid * 8
                     if not gv.StationIsMaster(sid) and (gv.srvals[sid] and gv.sd['mo'][bid] & 1 << s):
