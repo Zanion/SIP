@@ -576,9 +576,7 @@ signin_form = form.Form(
 def get_input(qdict, key, default=None, cast=None):
     """
     Checks data returned from a UI web page.
-    
-    
-    """
+    ""
     result = default
     if key in qdict:
         result = qdict[key]
