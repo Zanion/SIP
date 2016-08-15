@@ -54,7 +54,7 @@ def report_restart():
 def reboot(wait=1, block=False):
     """
     Reboots the Raspberry Pi from a new thread.
-    
+
     @type wait: int
     @param wait: length of time to wait before rebooting
     @type block: bool
@@ -83,7 +83,7 @@ def reboot(wait=1, block=False):
 def poweroff(wait=1, block=False):
     """
     Powers off the Raspberry Pi from a new thread.
-    
+
     @type wait: int or float
     @param wait: number of seconds to wait before rebooting
     @type block: bool
@@ -112,7 +112,7 @@ def poweroff(wait=1, block=False):
 def restart(wait=1, block=False):
     """
     Restarts the software from a new thread.
-    
+
     @type wait: int
     @param wait: length of time to wait before rebooting
     @type block: bool
@@ -142,7 +142,7 @@ def restart(wait=1, block=False):
 def uptime():
     """
     Returns UpTime for RPi
-    
+
     @rtype: String
     @return: Length of time System has been running.
     """
@@ -194,9 +194,9 @@ def mkdir_p(path):
 def check_rain():
     """
     Checks status of an installed rain sensor.
-    
+
     Handles normally open and normally closed rain sensors
-    
+
     Sets gv.sd['rs'] to 1 if rain is detected otherwise 0.
     """
 
@@ -249,10 +249,10 @@ def clear_mm():
 def plugin_adjustment():
     """
     Sums irrigation time (water level) adjustments from multiple plugins.
-    
-    The adjustment value output from a plugin must be 
+
+    The adjustment value output from a plugin must be
     a unique element in the gv.sd dictionary with a key starting with 'wl_'
-    
+
     @rtype:   float
     @return:  Total irrigation time adjustments for all active plugins
     """
@@ -265,9 +265,9 @@ def get_cpu_temp(unit=None):
     """
     Reads and returns the temperature of the CPU if available.
     If unit is F, temperature is returned as Fahrenheit otherwise Celsius.
-    
+
     @type unit: character
-    @param unit: F or C        
+    @param unit: F or C
     @rtype:   string
     @return:  CPU temperature
     """
@@ -297,11 +297,11 @@ def get_cpu_temp(unit=None):
 def timestr(t):
     """
     Convert duration in seconds to string in the form mm:ss.
-      
+
     @type  t: int
     @param t: duration in seconds
     @rtype:   string
-    @return:  duration as "mm:ss"   
+    @return:  duration as "mm:ss"
     """
     return str((t / 60 >> 0) / 10 >> 0) + str((t / 60 >> 0) % 10) + ":" + str((t % 60 >> 0) / 10 >> 0) + str(
         (t % 60 >> 0) % 10)
@@ -310,8 +310,8 @@ def timestr(t):
 def log_run():
     """
     Add run data to json log file - most recent first.
-    
-    If a record limit is specified (gv.sd['lr']) the number of records is truncated.  
+
+    If a record limit is specified (gv.sd['lr']) the number of records is truncated.
     """
 
     if gv.sd['lg']:
@@ -321,7 +321,7 @@ def log_run():
             pgr = _('Manual')
         else:
             pgr = str(gv.lrun[1])
-        start = time.gmtime(gv.now - gv.lrun[2])
+        start = time.gmtime(gv.CurrentTime() - gv.lrun[2])
         logline = '{"program":"' + pgr + '","station":' + str(gv.lrun[0]) + ',"duration":"' + timestr(
             gv.lrun[2]) + '","start":"' + time.strftime('%H:%M:%S","date":"%Y-%m-%d"', start) + '}'
         lines = []
@@ -343,8 +343,8 @@ def prog_match(prog):
     """
     if not prog[0]:
         return 0  # Skip if program is not enabled
-    devday = int(gv.now / 86400)  # Check day match
-    lt = time.gmtime(gv.now)
+    devday = int(gv.CurrentTime() / 86400)  # Check day match
+    lt = time.gmtime(gv.CurrentTime())
     if (prog[1] >= 128) and (prog[2] > 1):  # Interval program
         if (devday % prog[2]) != (prog[1] - 128):
             return 0
@@ -377,7 +377,7 @@ def schedule_stations(stations):
         rain = True
     else:
         rain = False
-    accumulate_time = gv.now
+    accumulate_time = gv.CurrentTime()
     if gv.IsSequential():  # sequential mode, stations run one after another
         for b in range(len(stations)):
             for s in range(8):
@@ -399,8 +399,8 @@ def schedule_stations(stations):
                     continue
                 if gv.rs[sid][2]:  # if station has a duration value
                     if not rain or gv.sd['ir'][b] & 1 << s:  # if no rain or station ignores rain
-                        gv.rs[sid][0] = gv.now  # accumulate_time # set start time
-                        gv.rs[sid][1] = (gv.now + gv.rs[sid][2])  # set stop time
+                        gv.rs[sid][0] = gv.CurrentTime()  # accumulate_time # set start time
+                        gv.rs[sid][1] = (gv.CurrentTime() + gv.rs[sid][2])  # set stop time
                     else:  # if rain and station does not ignore, clear station from display
                         gv.sbits[b] &= ~1 << s
                         gv.ClearUIProgramScheduleForStation(s)
@@ -450,7 +450,7 @@ def stop_stations():
 
 def read_log():
     """
-    
+
     """
     result = []
     try:
@@ -470,8 +470,8 @@ def read_log():
 def jsave(data, fname):
     """
     Save data to a json file.
-    
-    
+
+
     """
     with open('./data/' + fname + '.json', 'w') as f:
         json.dump(data, f)
@@ -481,9 +481,9 @@ def station_names():
     """
     Load station names from /data/stations.json file if it exists
     otherwise create file with defaults.
-    
+
     Return station names as a list.
-    
+
     """
     try:
         with open('./data/snames.json', 'r') as snf:
@@ -498,7 +498,7 @@ def load_programs():
     """
     Load program data into memory from /data/programs.json file if it exists.
     otherwise create an empty programs data list (gv.pd).
-    
+
     """
     try:
         with open('./data/programs.json', 'r') as pf:
@@ -513,7 +513,7 @@ def load_programs():
 def password_salt():
     """
     Generate random number for use as salt for password encryption
-    
+
     @rtype: string
     @return: random value as 64 byte string.
     """
@@ -523,11 +523,11 @@ def password_salt():
 def password_hash(password, salt):
     """
     Generate password hash using sha-1.
-    
+
     @type: string
     @param param: password
     @type param: string
-    @param: salt 
+    @param: salt
     """
     return sha1(password + salt).hexdigest()
 

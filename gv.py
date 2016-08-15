@@ -42,8 +42,8 @@ try:
     use_pigpio = True
 except ImportError:
     use_pigpio = False
-    
-# use_pigpio = False #  for tasting  
+
+# use_pigpio = False #  for tasting
 
 from helpers import password_salt, password_hash, load_programs, station_names
 
@@ -165,7 +165,7 @@ def StationPassedScheduledStopTime(station_id):
     """
     Return if the current time is after the scheduled stop time of a given station
     """
-    return now >= rs[station_id][1]
+    return CurrentTime() >= rs[station_id][1]
 
 
 def StationIsScheduled(station_id):
@@ -446,3 +446,32 @@ def SetRainDelayInHours(hours):
     """
     global sd
     sd['rd'] = hours
+
+
+def RainDelayStopTime():
+    """
+    Return rain delay stop time as unix timestamp
+    """
+    return sd['rdst']
+
+
+def SetRainDelayStopTime(time):
+    """
+    Set the rain delay stop time
+    """
+    global sd
+    sd['rdst'] = time
+
+
+def RainDelayStopTimeExpired():
+    """
+    Determine if rain delay stop time has expired
+    """
+    return RainDelayInHours() and CurrentTime() >= RainDelayStopTime()
+
+
+def CurrentTime():
+    """
+    Return current time
+    """
+    return now

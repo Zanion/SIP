@@ -29,7 +29,7 @@ def OneMinuteHasElapsed(last_min):
     Return if a full minute has elapsed since the last minute
     """
     SECONDS_PER_MINUTE = 60
-    return gv.now / SECONDS_PER_MINUTE != last_min
+    return gv.CurrentTime() / SECONDS_PER_MINUTE != last_min
 
 
 def GetStationIndex(board_offset, station_offset):
@@ -53,7 +53,7 @@ def timing_loop():
         gv.now = timegm(gv.nowt)   # Current time as timestamp based on local time from the Pi. Updated once per second.
         if gv.IsEnabled() and gv.IsAutoMode() and (gv.IsIdle() or gv.IsConcurrent()):
             if OneMinuteHasElapsed(last_min):  # only check programs once a minute
-                last_min = gv.now / 60
+                last_min = gv.CurrentTime() / 60
                 extra_adjustment = plugin_adjustment()
                 for index, program in enumerate(gv.ProgramData()):  # get both index and prog item
                     # check if program time matches current time, is active, and has a duration
@@ -98,13 +98,13 @@ def timing_loop():
                                 gv.ClearUIProgramScheduleForStation(sid)
                                 gv.lrun[0] = sid
                                 gv.lrun[1] = gv.rs[sid][3]
-                                gv.lrun[2] = int(gv.now - gv.rs[sid][0])
-                                gv.lrun[3] = gv.now
+                                gv.lrun[2] = int(gv.CurrentTime() - gv.rs[sid][0])
+                                gv.lrun[3] = gv.CurrentTime()
                                 log_run()
                                 gv.pon = None  # Program has ended
                             gv.rs[sid] = [0, 0, 0, 0]
                     else:  # if this station is not yet on
-                        if gv.rs[sid][0] <= gv.now < gv.rs[sid][1]:
+                        if gv.rs[sid][0] <= gv.CurrentTime() < gv.rs[sid][1]:
                             if not gv.StationIsMaster(sid):
                                 gv.srvals[sid] = 1  # station is turned on
                                 set_output()
@@ -151,13 +151,13 @@ def timing_loop():
                         mval = 1
                         break
                 if not mval:
-                    gv.rs[gv.IndexOfMasterStation()][1] = gv.now  # turn off master
+                    gv.rs[gv.IndexOfMasterStation()][1] = gv.CurrentTime()  # turn off master
 
         check_rain()  # in helpers.py
 
-        if gv.RainDelayInHours() and gv.now >= gv.sd['rdst']:  # Check of rain delay time is up
+        if gv.RainDelayStopTimeExpired():  # Check of rain delay time is up
             gv.SetRainDelayInHours(0)
-            gv.sd['rdst'] = 0  # Rain delay stop time
+            gv.SetRainDelayStopTime(0)
             jsave(gv.sd, 'sd')
         time.sleep(1)
         #### End of timing loop ####
