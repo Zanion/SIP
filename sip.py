@@ -62,6 +62,8 @@ def SchedulingLogic():
                                 continue
 
                             # station duration conditionally scaled by "water level"
+                            # This is same as sayin sd['iw'][board] 2^station
+                            # (But why? Why do this in such a convoluted roundabout way?)
                             if gv.sd['iw'][board] & 1 << station:
                                 duration_adj = 1.0
                                 duration = program[6]
@@ -69,6 +71,7 @@ def SchedulingLogic():
                                 duration_adj = gv.WaterLevelDurationAdjustment(extra_adjustment)
                                 duration = program[6] * duration_adj
                                 duration = int(round(duration)) # convert to int
+                            # Again... with this annoying bitshifty stuff
                             if program[7 + board] & 1 << station:  # if this station is scheduled in this program
                                 # Skip if concurrent and duration is shorter than existing station duration
                                 if gv.IsConcurrent() and duration < gv.rs[sid][2]:
@@ -176,7 +179,6 @@ def timing_loop():
         # helpers.py
         check_rain()
         RainDelayLogic()
-
         time.sleep(1)
         #### End of timing loop ####
 
